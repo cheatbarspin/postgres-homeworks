@@ -4,23 +4,23 @@ import psycopg2
 from settings import EMPLOYEES, CUSTOMERS, ORDERS
 
 conn = psycopg2.connect(host='localhost', database='north', user='cheatbarspin', password='1053')
-# try:
-#     with conn:
-#         with conn.cursor() as cur:
-#             with open(EMPLOYEES, 'r') as f:
-#                 next(f)
-#                 cur.copy_from(f, 'employees', sep=",")
-# finally:
-#     conn.close()
-
 try:
     with conn:
         with conn.cursor() as cur:
-            with open(CUSTOMERS, 'r') as f:
+            with open(EMPLOYEES, 'r') as f:
                 next(f)
-                cur.copy_from(f, 'customers', sep=",")
+                cur.copy_from(f, 'employees', sep="|", columns=("first_name", "last_name", "title", "birth_date", "notes"))
 finally:
     conn.close()
+
+# try:
+#     with conn:
+#         with conn.cursor() as cur:
+#             with open(CUSTOMERS, 'r') as f:
+#                 next(f)
+#                 cur.copy_from(f, 'customers', sep=",")
+# finally:
+#     conn.close()
 
 # try:
 #     with conn:
