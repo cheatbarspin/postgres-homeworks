@@ -7,29 +7,25 @@ conn = psycopg2.connect(host='localhost', database='north', user='cheatbarspin',
 try:
     with conn:
         with conn.cursor() as cur:
-            with open(EMPLOYEES, 'r') as f:
-                next(f)
-                cur.copy_from(f, 'employees', sep="|", columns=("first_name", "last_name", "title", "birth_date", "notes"))
+            cur.executemany('insert into employees values (%s, %s, %s, %s, %s, %s)',
+                            [('1', 'Alexander', 'Bogdad', 'Resaler', '1970-02-12', 'text_1'),
+                             ('2', 'Peter', 'Parker', 'Owner', '1982-11-12', 'text_2'),
+                             ('3', 'Alehandro', 'Ankara', 'Coworker', '1999-03-12', 'text_3')]
+                            )
+            cur.executemany('insert into customers values (%s, %s, %s)',
+                            [('ALFKI', 'Alfreds Futterkiste', 'Maria Anders'),
+                             ('ANATR', 'Ana Trujillo Emparedados y helados', 'Ana Trujillo'),
+                             ('ANTON', 'Antonio Moreno Taquería', 'Antonio Moreno')]
+                            )
+            cur.executemany('insert into orders values (%s, %s, %s, %s, %s)',
+                            [('10001', 'ALFKI', '2', '2023-03-22', 'Riga'),
+                             ('10002', 'ALFKI', '2', '2023-03-23', 'Riga'),
+                             ('10003', 'ANTON', '1', '2023-04-01', 'London')]
+                            )
+
+
 finally:
     conn.close()
-
-# try:
-#     with conn:
-#         with conn.cursor() as cur:
-#             with open(CUSTOMERS, 'r') as f:
-#                 next(f)
-#                 cur.copy_from(f, 'customers', sep=",")
-# finally:
-#     conn.close()
-
-# try:
-#     with conn:
-#         with conn.cursor() as cur:
-#             with open(ORDERS, 'r') as f:
-#                 next(f)
-#                 cur.copy_from(f, 'orders', sep=",")
-# finally:
-#     conn.close()
 
 # Методы вывода для проверки
 # cur.execute('SELECT * FROM employees')
